@@ -17,3 +17,16 @@ Thanks to UserDict, StrKeyDict is more concise than StrKeyDict0 05_Automatic_han
 more: it stores all keys as str, avoiding unpleasant surprises if the instance is built or updated with data containing 
 nonstring keys.
 """
+import collections
+
+class StrKeyDict(collections.UserDict):
+    def __missing__(self, key):
+        if isinstance(key, str):
+            raise KeyError(key)
+        return self[str(key)]
+
+    def __contains__(self, key):
+        return str(key) in self.data
+
+    def __setitem__(self, key, item):
+        self.data[str(key)] = item
