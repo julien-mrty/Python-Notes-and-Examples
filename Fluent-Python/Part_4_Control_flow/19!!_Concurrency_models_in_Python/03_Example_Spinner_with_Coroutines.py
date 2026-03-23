@@ -23,7 +23,9 @@ async def spin(msg: str) -> None:
 
 """ Blocks the calling thread but release the GIL so the spinner thread can proceed """
 async def slow() -> int:
+    """ # Ex: make an http call. Well-designed network libraries are async, therefore they release the GIL. """
     await asyncio.sleep(3)
+    #time.sleep(3) # Doesn't release the GIL
     return 42
 
 async def supervisor() -> int:
