@@ -2,9 +2,9 @@ import math
 import itertools
 from threading import Thread, Event
 
-
+NUMBERS = 5_000_111_000_222_021
 """ 
-Blocks the calling thread and doesn't release the GIL !!!
+is_prime blocks the calling thread and doesn't release the GIL !!!
 BUT, Python suspends the running thread every 5ms, making the GIL available to other pending threads.
 Therefore, the main thread running is_prime is interrupted every 5ms, allowing the secondary thread to wake up and 
 iterate once through the for loop, until it calls the wait method of the done event, at which time it will release the 
@@ -14,20 +14,6 @@ We got away with a compute-intensive task using threading in this simple experim
 one hogging the CPU, and the other waking up only 10 times per second to update the spinner. But if you have two or more
 threads vying for a lot of CPU time, your program will be slower than sequential code.
 """
-def is_prime(n: int) -> bool:
-    if n < 2:
-        return False
-    if n == 2:
-        return True
-    if n % 2 == 0:
-        return False
-    root = math.isqrt(n)
-    for i in range(3, root + 1, 2):
-        if n % i == 0:
-            return False
-
-    return True
-
 def spin(msg: str, done: Event) -> None:
     for char in itertools.cycle(r'\/-'):
         status = f'\r{char} {msg}'
@@ -42,7 +28,7 @@ def supervisor() -> int:
     spinner = Thread(target=spin, args=('thinking!', done))
     print(f'spinner object: {spinner}')
     spinner.start()
-    result = is_prime(5_000_111_000_222_021)
+    result = is_prime(NUMBERS)
     done.set()
     spinner.join()
     return result
