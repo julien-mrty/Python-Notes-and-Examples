@@ -11,6 +11,7 @@ def spin(msg: str, done: synchronize.Event) -> None:
         print(status, end='', flush=True)
         if done.wait(.1):
             break
+
     blanks = ' ' * len(status)
     print(f'\r{blanks}\r', end='')
 
