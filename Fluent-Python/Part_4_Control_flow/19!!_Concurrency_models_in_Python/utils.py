@@ -34,5 +34,4 @@ def is_prime(n: int) -> bool:
     for i in range(3, root + 1, 2):
         if n % i == 0:
             return False
-
     return True
